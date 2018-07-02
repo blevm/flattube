@@ -4,6 +4,7 @@ import TVShowList from './Components/TVShowList';
 import './App.css';
 import SearchBar from './Components/SearchBar';
 import ShowDetails from './Components/ShowDetails';
+import Seasons from './Components/Seasons';
 
 class App extends Component {
 
@@ -14,7 +15,8 @@ class App extends Component {
       shows: [],
       selectedShow: null,
       searchTerm: '',
-      filteredShows: []
+      filteredShows: [],
+      episodes: []
     }
   }
 
@@ -24,6 +26,14 @@ class App extends Component {
     this.setState({filteredShows: filteredShowArray})
   }
 
+  displayTheShows = () => {
+    if (this.state.searchTerm !== ""){
+      return this.state.filteredShows
+    } else {
+      return this.state.shows
+    }
+  }
+
   handleChange = (event) => {
     this.setState({searchTerm: event.target.value}, ()=>{this.filterTheShows()})
   }
@@ -31,7 +41,7 @@ class App extends Component {
   handleClick = (id) => {
     let singleShow = this.state.shows.find(show => show.id === id)
 
-    this.setState({selectedShow: singleShow})
+    Adapter.getShowEpisodes(id).then(episodes=>this.setState({selectedShow: singleShow, episodes }))
   }
 
   componentDidMount() {
@@ -41,12 +51,15 @@ class App extends Component {
   }
 
   render = () => {
-    console.log(`in render`, this.state.filteredShows)
+    console.log(`in render`, this.state.episodes)
     return (
       <div>
-        <SearchBar handleChange={this.handleChange} searchTerm={this.state.searchTerm}/>
-        {this.state.selectedShow ? <ShowDetails show={this.state.selectedShow}/> : null}
-        <TVShowList shows={this.state.shows} handleClick={this.handleClick} filteredShows={this.state.filteredShows}/>
+        <SearchBar
+          handleChange={this.handleChange}
+          searchTerm={this.state.searchTerm}
+          />
+        {this.state.selectedShow ? <ShowDetails episodes={this.state.episodes} show={this.state.selectedShow}/> : null}
+        <TVShowList shows={this.displayTheShows()} handleClick={this.handleClick}/>
       </div>
     );
   }

@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
 
-class TVShow extends Component {
+const TVShow = (props) => {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {}
-  }
-
-  render() {
-    return (
-      <div onClick={() => {this.props.handleClick(this.props.id)}}>
-        <h4>{this.props.name}</h4>
-        <img src={this.props.image} />
-      </div>
-    )
-  }
+  return (
+    <div onClick={() => {props.handleClick(props.id)}}>
+      <h4>{props.name}</h4>
+      <img src={props.image} />
+    </div>
+  )
 }
 
 export default TVShow;

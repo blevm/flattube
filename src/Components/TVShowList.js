@@ -8,7 +8,8 @@ class TVShowList extends Component {
       name={show.name}
       image={show.image.medium}
       id={show.id}
-      handleClick={this.props.handleClick}/>)
+      handleClick={this.props.handleClick}
+      />)
 
     return (
       <div>
